@@ -1,0 +1,97 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    private String name;
+    private boolean isPresent;
+
+    public Student(String name) {
+        this.name = name;
+        this.isPresent = false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isPresent() {
+        return isPresent;
+    }
+
+    public void markPresent() {
+        this.isPresent = true;
+    }
+
+    public void markAbsent() {
+        this.isPresent = false;
+    }
+}
+
+public class AttendanceManagementSystem {
+    private static ArrayList<Student> students = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\nAttendance Management System");
+            System.out.println("1. Add Student");
+            System.out.println("2. Mark Attendance");
+            System.out.println("3. View Attendance Report");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    markAttendance();
+                    break;
+                case 3:
+                    viewAttendanceReport();
+                    break;
+                case 4:
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void addStudent() {
+        System.out.print("Enter student name: ");
+        String name = scanner.nextLine();
+        students.add(new Student(name));
+        System.out.println("Student added successfully.");
+    }
+
+    private static void markAttendance() {
+        if (students.isEmpty()) {
+            System.out.println("No students available to mark attendance.");
+            return;
+        }
+        for (Student student : students) {
+            System.out.print("Is " + student.getName() + " present? (yes/no): ");
+            String response = scanner.nextLine().trim().toLowerCase();
+            if (response.equals("yes")) {
+                student.markPresent();
+            } else {
+                student.markAbsent();
+            }
+        }
+        System.out.println("Attendance marked successfully.");
+    }
+
+    private static void viewAttendanceReport() {
+        if (students.isEmpty()) {
+            System.out.println("No students available to show attendance report.");
+            return;
+        }
+        System.out.println("\nAttendance Report:");
+        for (Student student : students) {
+            System.out.println(student.getName() + ": " + (student.isPresent() ? "Present" : "Absent"));
+        }
+    }
+}
